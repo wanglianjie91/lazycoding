@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block title %}
+    <title>lazycoding_王连杰的个人博客</title>
+  {% endblock %}
+  {% block keywords %}
+    <meta name="keywords" content="前端,python,react">
+  {% endblock %}
+  {% block description %}
+    <meta name="description" content="王连杰的个人博客，前端,python学习笔记。">
+  {% endblock %}
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/markdown.css' %}">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="top">
+        <div class="blog_logo">
+          <div class="blog_name">Lazycoding</div>
+          <div class="blog_owner">王连杰的个人博客</div>
+        </div>
+        <div class="top_search">
+          <form action="{% url 'search' %}" type="get">
+            <input type="text" class="search_input" name="keywords" />
+            <button class="search_btn" type="submit">搜索</button>
+          </form>
+        </div>
+      </div>
+      <!-- top end -->
+      {% load tags %}
+      <nav class="category">
+        {% with request.resolver_match.url_name as url_name %}
+          <ul>
+            <li class="{% if url_name == 'index' %}cat_active{% endif %}"><a href="/" target="_self" rel="noopener noreferrer">首页</a></li>
+            {% for category in categorys %}
+              <li class="{% if url_name == 'category' and request.path|active_cat:category.pk %}cat_active{% endif %}"><a href="{% url 'category' category.pk %}" target="_self" rel="noopener noreferrer">{{ category.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endwith %}
+      </nav>
+      <!-- nav end -->
+    </header>
+    <!-- header end -->
+    <div class="content">
+      <div class="main">
+        {% block content %}{% endblock %}
+      </div>
+      <!-- main end -->
+      <aside class="aside">
+        <div class="concat">
+          <div class="concat_name">微信</div>
+          <div class="concat_image">
+            <img src="{% static 'images/code.jpeg' %}" alt="wechat:lianjie888">
+          </div>
+        </div>
+        <div class="aside_cont archive">
+          <h4 class="aside_title">文章归档</h4>
+          <ul class="archive_cont">
+            {% for archive in archives %}
+              <li><a href="{% url 'archive_month' archive.date.year archive.date.month %}">{{ archive.date|date:'Y年m月' }}（{{archive.count}}）</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="aside_cont new_article">
+          <h4 class="aside_title">近期文章</h4>
+          <ul class="new_article_list">
+            {% for article in recent_articles %}
+                <li><a href="{% url 'article' article.pk %}">{{article.title}}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="aside_cont tags_category">
+          <h4 class="aside_title">标签导航</h4>
+          <div class="tags_cont">
+            {% for tag in tags %}
+              <span class="tag_item {% if tag.important %}tag_item_big{% endif %}">
+                  <a href="{% url 'tag' tag.pk %}">{{tag.name}}</a>
+              </span>
+            {% endfor %}
+          </div>
+        </div>
+      </aside>
+      <!-- aside end -->
+    </div>
+    <!-- content end -->
+    <footer class="footer">
+      <p>版权所有 © (2019 - 2020) 王连杰 │ 网站地图 │ 联系作者 │ 域名主机提供商: 腾讯云</p>
+      <p>备案：滇ICP备15003443号-2⋅滇公网安备00000000000000号</p>
+      <p>本站遵循"署名-非商业用途-保持一致"的创作共用协议，转载文章须注明来源。</p>
+    </footer>
+    <!-- footer end -->
+  </div>
+</body>
+</html>

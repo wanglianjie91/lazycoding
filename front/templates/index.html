@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>{{title}}</title>
+{% endblock %}
+{% block keywords %}
+  <meta name="keywords" content="{{keywords}}">
+{% endblock %}
+{% block description %}
+  <meta name="description" content="{{description}}">
+{% endblock %}
+{% block content %}
+  <ul class="article_list">
+    {% for article in article_lists %}
+      <li class="article_list_item">
+        <h3 class="item_title">{{article.title}}</h3>
+        <p class="item_description">{{article.description | truncatechars:120}}...</p>
+        <a href="{% url 'article' article.pk %}" class="item_link">继续阅读 →</a>
+        <div class="item_other">
+          <div class="item"><span class="item_title">Time:</span>{{article.update_time|date:'Y-m-d'}}</div>
+          <div class="item"><span class="item_title">From:</span>{{article.category.name}}</div>
+          <div class="item">
+            <span class="item_title">Keys:</span>
+            {% for key in article.tags.all %}
+              <span class="item_key">{{key}}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>{{title}}</title>
+{% endblock %}
+{% block keywords %}
+  <meta name="keywords" content="{{keywords}}">
+{% endblock %}
+{% block description %}
+  <meta name="description" content="{{description}}">
+{% endblock %}
+{% block content %}
+<div class="article">
+    <div class="article_title">{{article.title}}</div>
+        <div class="article_wrapper">
+            <div class="article_other">
+                <div class="article_author">
+                    <span class="author_key">From:</span>
+                    <span class="author_value">{{article.category}}</span>
+                </div>
+                <div class="pub_time">
+                    <span class="pub_time_key">Time:</span>
+                    <span class="pub_time_value">{{ article.update_time|date:'Y年m月d日'}}</span>
+                </div>
+            </div>
+        <div class="article_main markdown">{{article.content | safe | escape}}</div>
+        <div class="article_keys">
+            <span class="article_keys_title">Keys:</span>
+            {% for key in article.tags.all %}
+                <span class="article_key">{{key}}</span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
